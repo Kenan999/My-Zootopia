@@ -6,6 +6,15 @@ def load_data(file_path):
         return json.load(handle)
 
 
+def get_available_skin_types(animals):
+    skin_types = set()
+    for animal in animals:
+        skin = animal.get("characteristics", {}).get("skin_type")
+        if skin:
+            skin_types.add(skin)
+    return sorted(skin_types)
+
+
 def serialize_animal(animal):
     output = ''
     output += '<li class="cards__item">'
@@ -44,9 +53,6 @@ def serialize_animal(animal):
     if characteristics.get("temperament"):
         output += f'<li class="card__list-item"><strong>Temperament:</strong> {characteristics.get("temperament")}</li>'
 
-    if characteristics.get("slogan"):
-        output += f'<li class="card__list-item"><strong>Fact:</strong> {characteristics.get("slogan")}</li>'
-
     output += '</ul>'
     output += '</div>'
     output += '</li>'
@@ -57,8 +63,25 @@ def serialize_animal(animal):
 def main():
     animals_data = load_data('animals_data.json')
 
+    available_skin_types = get_available_skin_types(animals_data)
+
+    print("Available skin types:")
+    for skin in available_skin_types:
+        print(f"- {skin}")
+
+    selected_skin = input("\nEnter a skin type from the list above: ").strip()
+
+    filtered_animals = [
+        animal for animal in animals_data
+        if animal.get("characteristics", {}).get("skin_type") == selected_skin
+    ]
+
+    if not filtered_animals:
+        print("No animals found with that skin type.")
+        return
+
     animals_output = ''
-    for animal in animals_data:
+    for animal in filtered_animals:
         animals_output += serialize_animal(animal)
 
     with open('animals_template.html', 'r') as template_file:
@@ -71,6 +94,8 @@ def main():
 
     with open('animals.html', 'w') as output_file:
         output_file.write(new_html_content)
+
+    print("\nWebsite generated successfully for selected skin type.")
 
 
 if __name__ == '__main__':
