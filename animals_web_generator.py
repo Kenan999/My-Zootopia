@@ -18,34 +18,36 @@ def serialize_animal(animal):
     locations = animal.get("locations", [])
 
     output += '<div class="card__text">'
+    output += '<ul class="card__list">'
 
     if characteristics.get("diet"):
-        output += f'<p><strong>Diet:</strong> {characteristics.get("diet")}</p>'
+        output += f'<li class="card__list-item"><strong>Diet:</strong> {characteristics.get("diet")}</li>'
 
     if locations:
-        output += f'<p><strong>Locations:</strong> {", ".join(locations)}</p>'
+        output += f'<li class="card__list-item"><strong>Locations:</strong> {", ".join(locations)}</li>'
 
     if taxonomy.get("class"):
-        output += f'<p><strong>Class:</strong> {taxonomy.get("class")}</p>'
+        output += f'<li class="card__list-item"><strong>Class:</strong> {taxonomy.get("class")}</li>'
 
     if taxonomy.get("order"):
-        output += f'<p><strong>Order:</strong> {taxonomy.get("order")}</p>'
+        output += f'<li class="card__list-item"><strong>Order:</strong> {taxonomy.get("order")}</li>'
 
     if taxonomy.get("family"):
-        output += f'<p><strong>Family:</strong> {taxonomy.get("family")}</p>'
+        output += f'<li class="card__list-item"><strong>Family:</strong> {taxonomy.get("family")}</li>'
 
     if characteristics.get("lifespan"):
-        output += f'<p><strong>Lifespan:</strong> {characteristics.get("lifespan")}</p>'
+        output += f'<li class="card__list-item"><strong>Lifespan:</strong> {characteristics.get("lifespan")}</li>'
 
     if characteristics.get("color"):
-        output += f'<p><strong>Color:</strong> {characteristics.get("color")}</p>'
+        output += f'<li class="card__list-item"><strong>Color:</strong> {characteristics.get("color")}</li>'
 
     if characteristics.get("temperament"):
-        output += f'<p><strong>Temperament:</strong> {characteristics.get("temperament")}</p>'
+        output += f'<li class="card__list-item"><strong>Temperament:</strong> {characteristics.get("temperament")}</li>'
 
     if characteristics.get("slogan"):
-        output += f'<p><strong>Fact:</strong> {characteristics.get("slogan")}</p>'
+        output += f'<li class="card__list-item"><strong>Fact:</strong> {characteristics.get("slogan")}</li>'
 
+    output += '</ul>'
     output += '</div>'
     output += '</li>'
 
