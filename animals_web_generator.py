@@ -10,25 +10,43 @@ def serialize_animal(animal):
     output = ''
     output += '<li class="cards__item">'
 
-    name = animal.get("name")
-    if name:
-        output += f'<div class="card__title">{name}</div>'
+    name = animal.get("name", "Unknown")
+    output += f'<div class="card__title">{name}</div>'
 
-    output += '<p class="card__text">'
+    characteristics = animal.get("characteristics", {})
+    taxonomy = animal.get("taxonomy", {})
+    locations = animal.get("locations", [])
 
-    diet = animal.get("characteristics", {}).get("diet")
-    if diet:
-        output += f'<strong>Diet:</strong> {diet}<br/>'
+    output += '<div class="card__text">'
 
-    locations = animal.get("locations")
-    if locations and len(locations) > 0:
-        output += f'<strong>Location:</strong> {locations[0]}<br/>'
+    if characteristics.get("diet"):
+        output += f'<p><strong>Diet:</strong> {characteristics.get("diet")}</p>'
 
-    animal_type = animal.get("characteristics", {}).get("type")
-    if animal_type:
-        output += f'<strong>Type:</strong> {animal_type}<br/>'
+    if locations:
+        output += f'<p><strong>Locations:</strong> {", ".join(locations)}</p>'
 
-    output += '</p>'
+    if taxonomy.get("class"):
+        output += f'<p><strong>Class:</strong> {taxonomy.get("class")}</p>'
+
+    if taxonomy.get("order"):
+        output += f'<p><strong>Order:</strong> {taxonomy.get("order")}</p>'
+
+    if taxonomy.get("family"):
+        output += f'<p><strong>Family:</strong> {taxonomy.get("family")}</p>'
+
+    if characteristics.get("lifespan"):
+        output += f'<p><strong>Lifespan:</strong> {characteristics.get("lifespan")}</p>'
+
+    if characteristics.get("color"):
+        output += f'<p><strong>Color:</strong> {characteristics.get("color")}</p>'
+
+    if characteristics.get("temperament"):
+        output += f'<p><strong>Temperament:</strong> {characteristics.get("temperament")}</p>'
+
+    if characteristics.get("slogan"):
+        output += f'<p><strong>Fact:</strong> {characteristics.get("slogan")}</p>'
+
+    output += '</div>'
     output += '</li>'
 
     return output

@@ -1,73 +1,177 @@
+
+<!DOCTYPE html>
 <html>
-    <head>
-        <style>
-        @gray-darker:               #444444;
-        @gray-dark:                 #696969;
-        @gray:                      #999999;
-        @gray-light:                #cccccc;
-        @gray-lighter:              #ececec;
-        @gray-lightest:             lighten(@gray-lighter,4%);
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zootopia – Animal Repository</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-
-        html {
-          background-color: #ffe9e9;
+        body {
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            padding: 80px 50px;
+            color: #ffffff;
+            background:
+                radial-gradient(circle at 15% 20%, rgba(0,255,200,0.15), transparent 40%),
+                radial-gradient(circle at 85% 30%, rgba(255,0,150,0.15), transparent 40%),
+                radial-gradient(circle at 50% 90%, rgba(0,120,255,0.15), transparent 40%),
+                linear-gradient(135deg, #0f2027, #1c2b3a, #203a43);
+            background-attachment: fixed;
+            overflow-x: hidden;
         }
 
         h1 {
             text-align: center;
-            font-size: 40pt;
-            font-weight: normal;
+            font-size: 4rem;
+            font-weight: 900;
+            margin-bottom: 80px;
+            letter-spacing: 4px;
+            background: linear-gradient(90deg, #00f5a0, #00d9f5, #ff00cc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: pulseGlow 5s ease-in-out infinite alternate;
         }
 
-        body {
-          font-family: 'Roboto','Helvetica Neue', Helvetica, Arial, sans-serif;
-          font-style: normal;
-          font-weight: 400;
-          letter-spacing: 0;
-          padding: 1rem;
-          text-rendering: optimizeLegibility;
-          -webkit-font-smoothing: antialiased;
-          -moz-osx-font-smoothing: grayscale;
-          -moz-font-feature-settings: "liga" on;
-          width: 900px;
-          margin: auto;
+        @keyframes pulseGlow {
+            from { filter: drop-shadow(0 0 15px rgba(0,245,160,0.4)); }
+            to { filter: drop-shadow(0 0 40px rgba(255,0,200,0.8)); }
         }
 
         .cards {
-          list-style: none;
-          margin: 0;
-          padding: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+            gap: 50px;
+            list-style: none;
+            max-width: 1800px;
+            margin: 0 auto;
         }
 
         .cards__item {
-          background-color: white;
-          border-radius: 0.25rem;
-          box-shadow: 0 20px 40px -14px rgba(0,0,0,0.25);
-          overflow: hidden;
-          padding: 1rem;
-          margin: 50px;
+            position: relative;
+            background: rgba(255,255,255,0.07);
+            backdrop-filter: blur(22px);
+            border-radius: 32px;
+            padding: 40px;
+            border: 1px solid rgba(255,255,255,0.15);
+            box-shadow: 0 25px 80px rgba(0,0,0,0.65);
+            overflow: hidden;
+            transition: all 0.5s ease;
+            animation: fadeInUp 0.8s ease forwards;
         }
+
+        .cards__item:nth-child(odd) {
+            animation-delay: 0.1s;
+        }
+        .cards__item:nth-child(even) {
+            animation-delay: 0.2s;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .cards__item::after {
+            content: "";
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(120deg, rgba(255,255,255,0.15), transparent 50%);
+            top: -50%;
+            left: -50%;
+            transform: rotate(25deg);
+            transition: 0.8s;
+        }
+
+        .cards__item:hover::after {
+            top: -30%;
+            left: -30%;
+        }
+
+        .cards__item:hover {
+            transform: translateY(-20px) scale(1.03);
+            box-shadow: 0 35px 100px rgba(0,0,0,0.85);
+        }
+
 
         .card__title {
-          color: @gray-dark;
-          font-size: 1.25rem;
-          font-weight: 300;
-          letter-spacing: 2px;
-          text-transform: uppercase;
+            font-size: 2.1rem;
+            font-weight: 800;
+            margin-bottom: 30px;
+            color: #00f5a0;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            position: relative;
+            z-index: 2;
         }
 
-        .card__text {
-          flex: 1 1 auto;
-          font-size: 0.95rem;
-          line-height: 2;
-          margin-bottom: 1.25rem;
+        .card__text p {
+            margin-bottom: 14px;
+            font-size: 1rem;
+            color: #dffaff;
+            transition: 0.3s ease;
+            position: relative;
+            padding-left: 18px;
+            position: relative;
+            z-index: 2;
         }
-        </style>
-    </head>
-    <body>
-        <h1>My Animal Repository</h1>
-        <ul class="cards">
-            __REPLACE_ANIMALS_INFO__
-        </ul>
-    </body>
+
+        .card__text p::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #00d9f5;
+        }
+
+        .card__text p:hover {
+            transform: translateX(8px);
+            color: #ffffff;
+        }
+
+        .card__text strong {
+            color: #00d9f5;
+            font-weight: 700;
+        }
+
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f2027;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(#00f5a0, #ff00cc);
+            border-radius: 10px;
+        }
+
+        @media (max-width: 900px) {
+            h1 {
+                font-size: 2.8rem;
+            }
+            body {
+                padding: 50px 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>🦊 ZOOTOPIA</h1>
+    <ul class="cards">
+        __REPLACE_ANIMALS_INFO__
+    </ul>
+</body>
 </html>
