@@ -16,20 +16,23 @@ def main():
 
         name = animal.get("name")
         if name:
-            animals_output += f"Name: {name}<br/>"
+            animals_output += f'<div class="card__title">{name}</div>'
+
+        animals_output += '<p class="card__text">'
 
         diet = animal.get("characteristics", {}).get("diet")
         if diet:
-            animals_output += f"Diet: {diet}<br/>"
+            animals_output += f'<strong>Diet:</strong> {diet}<br/>'
 
         locations = animal.get("locations")
         if locations and len(locations) > 0:
-            animals_output += f"Location: {locations[0]}<br/>"
+            animals_output += f'<strong>Location:</strong> {locations[0]}<br/>'
 
         animal_type = animal.get("characteristics", {}).get("type")
         if animal_type:
-            animals_output += f"Type: {animal_type}<br/>"
+            animals_output += f'<strong>Type:</strong> {animal_type}<br/>'
 
+        animals_output += '</p>'
         animals_output += '</li>'
 
     with open('animals_template.html', 'r') as template_file:
