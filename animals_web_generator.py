@@ -2,17 +2,34 @@
 
 Generates an HTML website for animals filtered by skin type.
 
-This script loads animal data from a JSON file, prompts the user to select a skin type,
-filters animals by the selected type, and generates an HTML file using a template.
+This script fetches animal data from the API-Ninjas Animals API,
+prompts the user to select a skin type, filters animals by the
+selected type, and generates an HTML file using a template.
 """
 
+import os
 import json
+import requests
 
 
-def load_data(file_path):
-    """Load and return JSON data from the given file path."""
-    with open(file_path, "r", encoding="utf-8") as handle:
-        return json.load(handle)
+API_URL = "https://api.api-ninjas.com/v1/animals?name=Fox"
+
+
+def fetch_data_from_api():
+    """Fetch animal data from the API using the API key from environment."""
+    api_key = os.environ.get("API_KEY")
+
+    if not api_key:
+        raise ValueError("API_KEY environment variable is not set.")
+
+    response = requests.get(
+        API_URL,
+        headers={"X-Api-Key": api_key},
+        timeout=10,
+    )
+
+    response.raise_for_status()
+    return response.json()
 
 
 def get_available_skin_types(animals):
@@ -97,7 +114,7 @@ def serialize_animal(animal):
 
 def main():
     """Generate the filtered animal website based on selected skin type."""
-    animals_data = load_data('animals_data.json')
+    animals_data = fetch_data_from_api()
 
     available_skin_types = get_available_skin_types(animals_data)
 
