@@ -12,34 +12,25 @@ import json
 import requests
 
 
-API_URL = "https://api.api-ninjas.com/v1/animals?name=Fox"
+API_BASE_URL = "https://api.api-ninjas.com/v1/animals"
 
 
-def fetch_data_from_api():
-    """Fetch animal data from the API using the API key from environment."""
+def fetch_data_from_api(animal_name):
+    """Fetch animal data from the API using the API key and animal name."""
     api_key = os.environ.get("API_KEY")
 
     if not api_key:
         raise ValueError("API_KEY environment variable is not set.")
 
     response = requests.get(
-        API_URL,
+        API_BASE_URL,
         headers={"X-Api-Key": api_key},
+        params={"name": animal_name},
         timeout=10,
     )
 
     response.raise_for_status()
     return response.json()
-
-
-def get_available_skin_types(animals):
-    """Return a sorted list of unique skin types found in the dataset."""
-    skin_types = set()
-    for animal in animals:
-        skin = animal.get("characteristics", {}).get("skin_type")
-        if skin:
-            skin_types.add(skin)
-    return sorted(skin_types)
 
 
 def serialize_animal(animal):
@@ -113,32 +104,21 @@ def serialize_animal(animal):
 
 
 def main():
-    """Generate the filtered animal website based on selected skin type."""
-    animals_data = fetch_data_from_api()
+    """Generate the animal website based on user input."""
+    animal_name = input("Enter a name of an animal: ").strip()
 
-    available_skin_types = get_available_skin_types(animals_data)
+    if not animal_name:
+        print("Animal name cannot be empty.")
+        return
 
-    print("Available skin types:")
-    for skin in available_skin_types:
-        print(f"- {skin}")
+    animals_data = fetch_data_from_api(animal_name)
 
-    selected_skin = input(
-        "\nEnter a skin type from the list above: "
-    ).strip()
-
-    filtered_animals = [
-        animal
-        for animal in animals_data
-        if animal.get("characteristics", {}).get("skin_type")
-        == selected_skin
-    ]
-
-    if not filtered_animals:
-        print("No animals found with that skin type.")
+    if not animals_data:
+        print("No animals found for that name.")
         return
 
     animals_output = ''
-    for animal in filtered_animals:
+    for animal in animals_data:
         animals_output += serialize_animal(animal)
 
     with open('animals_template.html', 'r', encoding='utf-8') as template_file:
@@ -152,7 +132,7 @@ def main():
     with open('animals.html', 'w', encoding='utf-8') as output_file:
         output_file.write(new_html_content)
 
-    print("\nWebsite generated successfully for selected skin type.")
+    print("Website was successfully generated to the file animals.html.")
 
 
 if __name__ == '__main__':
