@@ -7,30 +7,7 @@ prompts the user to select a skin type, filters animals by the
 selected type, and generates an HTML file using a template.
 """
 
-import os
-import json
-import requests
-
-
-API_BASE_URL = "https://api.api-ninjas.com/v1/animals"
-
-
-def fetch_data_from_api(animal_name):
-    """Fetch animal data from the API using the API key and animal name."""
-    api_key = os.environ.get("API_KEY")
-
-    if not api_key:
-        raise ValueError("API_KEY environment variable is not set.")
-
-    response = requests.get(
-        API_BASE_URL,
-        headers={"X-Api-Key": api_key},
-        params={"name": animal_name},
-        timeout=10,
-    )
-
-    response.raise_for_status()
-    return response.json()
+import data_fetcher
 
 
 def serialize_animal(animal):
@@ -111,7 +88,7 @@ def main():
         print("Animal name cannot be empty.")
         return
 
-    animals_data = fetch_data_from_api(animal_name)
+    animals_data = data_fetcher.fetch_data(animal_name)
 
     if not animals_data:
         error_html = (
