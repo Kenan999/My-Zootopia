@@ -114,7 +114,31 @@ def main():
     animals_data = fetch_data_from_api(animal_name)
 
     if not animals_data:
-        print("No animals found for that name.")
+        error_html = (
+            f'<div class="cards__item">'
+            f'<div class="card__title">Animal Not Found</div>'
+            f'<div class="card__text">'
+            f'<ul class="card__list">'
+            f'<li class="card__list-item">'
+            f'The animal "{animal_name}" does not exist.'
+            f'</li>'
+            f'</ul>'
+            f'</div>'
+            f'</div>'
+        )
+
+        with open('animals_template.html', 'r', encoding='utf-8') as template_file:
+            template_content = template_file.read()
+
+        new_html_content = template_content.replace(
+            '__REPLACE_ANIMALS_INFO__',
+            error_html,
+        )
+
+        with open('animals.html', 'w', encoding='utf-8') as output_file:
+            output_file.write(new_html_content)
+
+        print("Website generated with error message in animals.html.")
         return
 
     animals_output = ''
