@@ -1,12 +1,3 @@
-"""animals_web_generator.py
-
-Generates an HTML website for animals filtered by skin type.
-
-This script fetches animal data from the API-Ninjas Animals API,
-prompts the user to select a skin type, filters animals by the
-selected type, and generates an HTML file using a template.
-"""
-
 import data_fetcher
 
 
